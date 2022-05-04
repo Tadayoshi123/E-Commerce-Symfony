@@ -9,13 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommerceController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
-    public function index(): Response
-    {
-        return $this->render('commerce/home.html.twig', [
-            'controller_name' => 'CommerceController',
-        ]);
-    }
+    // #[Route('/', name: 'app_home')]
+    // public function index(): Response
+    // {
+    //     return $this->render('commerce/home.html.twig', [
+    //         'controller_name' => 'CommerceController',
+    //     ]);
+    // }
 
     #[Route('/produit', name: 'app_produit')]
     public function products(ProduitRepository $repo): Response
