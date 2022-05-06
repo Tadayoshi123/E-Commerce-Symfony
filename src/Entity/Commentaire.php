@@ -13,10 +13,6 @@ class Commentaire
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'commentaires')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $user_id;
-
     #[ORM\Column(type: 'text')]
     private $contenu;
 
@@ -27,21 +23,12 @@ class Commentaire
     #[ORM\JoinColumn(nullable: false)]
     private $produit_id;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'commentaires')]
+    private $user_id;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?User
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?User $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
     }
 
     public function getContenu(): ?string
@@ -76,6 +63,18 @@ class Commentaire
     public function setProduitId(?Produit $produit_id): self
     {
         $this->produit_id = $produit_id;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }
