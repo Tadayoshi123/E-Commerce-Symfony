@@ -32,7 +32,7 @@ class Produit
     private $categorie_id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $user_id;
 
     #[ORM\OneToMany(mappedBy: 'produit_id', targetEntity: Commentaire::class)]

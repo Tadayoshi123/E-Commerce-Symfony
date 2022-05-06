@@ -1,7 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CommerceController!{% endblock %}
+{% block title %}Liste des produits
+{% endblock %}
 
 {% block body %}
+	<h1 class="text-center my-3">Liste des produits</h1>
 
-{% endblock %}
+	<div class="row">
+		{% for produit in produits %}
+			<div class="col-md-4">
+				<div class="card mb-3" style="width: 18rem;">
+					<h3 class="card-header">{{ produit.nom}}</h3>
+					<img src="{{ produit.image }}" alt="Image du produit">
+					<div class="card-body">
+						<p class="card-text text-end fw-bold">
+							{{ produit.prix }}€</p>
+					</div>
+					<div class="card-body text-end">
+						<a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-primary">
+							Lire la suite
+							<a href="{{ path('panier_add', {id: produit.id }) }}" class="card-link btn btn-primary">Ajouter au panier</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+	{% endblock %}

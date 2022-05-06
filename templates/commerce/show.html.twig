@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<section class="row produit">
+		<section class="produits">
+			<article class="col-md-6 mx-auto text-center border border-dark mb-3 p-3 mt-3 mr-1">
+				<h2>{{ produit.nom }}</h2>
+				<div class="metadata">Ecrit le
+					dans la catégorie
+					{{ produit.categorie.titre }}</div>
+				<div class="content">
+					<img
+					src=" {{ produit.image }}" alt="Image du produit">
+					<hr>
+					{{ produit.description |raw}}
+
+				</div>
+			</article>
+		</section>
+		<h2 class="text-center mx-auto m-3">Commentaires</h2>
+		<section id="commentaire" class="col-md-10 mx-auto">
+
+			{% for commentaire in produit.commentaire %}
+
+				<div class="commentaire">
+					<div class="row">
+						<div class="col-md-3">
+							{{ commentaire.user_id }}
+							(<small>{{ commentaire.createdAt |date('d/m/Y à H:i:s') }}</small>
+						</div>
+						<div class="col-md-9">
+							{{ commentaire.contenu |raw }}
+						</div>
+					</div>
+				</div>
+				<hr>
+
+			{% endfor %}
+
+		</section>
+
+	{% endblock %}

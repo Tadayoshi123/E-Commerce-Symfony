@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Repository\ProduitRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +24,15 @@ class CommerceController extends AbstractController
         $produits = $repo->findAll();
         return $this->render('commerce/index.html.twig', [
             'produits' => $produits,
+        ]);
+    }
+
+    #[Route('/produit/show/{id}', name:'produit_show')]
+
+    public function show(Produit $produit)
+    {
+        return $this->render('commerce/show.html.twig', [
+            'produit' => $produit
         ]);
     }
 }

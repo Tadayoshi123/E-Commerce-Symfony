@@ -28,11 +28,7 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
 						<a class="nav-link active" href="{{ path('app_produit') }}">Produits
-							{# <a class="nav-link active position-relative" href="{{ path('app_cart') }}">Panier #}
-
-								{# avec TWIG, nous utilisons le mot-clef 'set' pour créer des variables #}
-								{# nous allons créer une var nbProduits qui va récupérer le nb total de produits en session #}
-								{# pour récupérer un attr de session, on utilise app.session #}
+							<a class="nav-link active position-relative" href="{{ path('app_panier') }}">Panier
 
 								{% set nbProduits = app.session.get('qt') %}
 
