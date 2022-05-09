@@ -5,6 +5,18 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+
+# config/packages/security.yaml
+security:
+    # ...
+
+    firewalls:
+        main:
+            # ...
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 services:
     # default configuration for services in *this* file
     _defaults:
