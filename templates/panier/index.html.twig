@@ -24,10 +24,17 @@
 					<tr>
 						<td>{{ item.produit.nom }}</td>
 						<td>{{ item.produit.prix }}€</td>
-						<td>{{ item.quantity }}</td>
+						<td>{{ item.quantity }}
+							<a href="{{ path('panier_add', {id : item.produit.id}) }}">
+								<i class="fas fa-plus"></i>
+							</a>
+							<a href="{{ path('panier_remove', {id : item.produit.id}) }}">
+								<i class="fas fa-minus"></i>
+							</a>
+						</td>
 						<td>{{ item.produit.prix * item.quantity }}</td>
 						<td>
-							<a href="{{ path('panier_remove', {id : item.produit.id}) }}" class="btn-sm btn-danger">
+							<a href="{{ path('panier_delete', {id : item.produit.id}) }}" class="btn-sm btn-danger">
 								<i class="fas fa-trash"></i>
 							</a>
 						</td>

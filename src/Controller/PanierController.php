@@ -32,4 +32,12 @@ class PanierController extends AbstractController
         $cs->remove($id);
         return $this->redirectToRoute('app_panier');
     }
+
+    #[Route('/panier/delete/{id}', name: 'panier_delete')]
+
+    public function delete($id, PanierService $cs)
+    {
+        $cs->delete($id);
+        return $this->redirectToRoute('app_panier');
+    }
 }

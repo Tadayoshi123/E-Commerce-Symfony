@@ -12,7 +12,7 @@ class PanierService
 
     public function __construct(ProduitRepository $repo, RequestStack $rs)
     {
-        $this->repo= $repo;
+        $this->repo = $repo;
         $this->rs = $rs;
     }
 
@@ -30,12 +30,26 @@ class PanierService
         $session->set('panier', $panier);
     }
 
-    public function remove($id)
+    public function delete($id)
     {
         $session = $this->rs->getSession();
         $panier = $session->get('panier', []);
 
         if (!empty($panier[$id]))
+            unset($panier[$id]);
+
+        $session->set('panier', $panier);
+    }
+
+    public function remove($id)
+    {
+        $session = $this->rs->getSession();
+
+        $panier = $session->get('panier', []);
+
+        if (!empty($panier[$id]) && $panier[$id] > 1)
+            $panier[$id]--;
+        else
             unset($panier[$id]);
 
         $session->set('panier', $panier);
