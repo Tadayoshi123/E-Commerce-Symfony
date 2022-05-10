@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>
+		{% if editMode %}
+			Edition de l'article
+		{% else %}
+			Création d'un article
+		{% endif %}
+	</h1>
+	{{ form_start(formProduit) }}
+
+	{{ form_row(formProduit.nom, {
+        'label':'Nom',
+        'attr': {
+            'placeholder': "Nom du produit"
+        }
+    }) }}
+
+	{{ form_row(formProduit.description, {
+        'label':'Contenu',
+        'attr': {
+            'placeholder': "Description du produit"
+        }
+    }) }}
+
+	{{ form_row(formProduit.imageFile) }}
+
+	{{ form_row(formProduit.categorieid, {
+        'label': "Catégorie"
+    }) }}
+
+	<button type="submit" class="btn btn-primary">
+		{% if editMode %}
+			Enregistrer les modifications
+		{% else %}
+			Ajouter le produit
+		{% endif %}
+	</button>
+
+	{{ form_end(formProduit) }}
+
+{% endblock %}

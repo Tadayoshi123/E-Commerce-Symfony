@@ -5,9 +5,8 @@
 		<section class="produits">
 			<article class="col-md-6 mx-auto text-center border border-dark mb-3 p-3 mt-3 mr-1">
 				<h2>{{ produit.nom }}</h2>
-				<div class="metadata">Ecrit le
-					dans la catégorie
-					{{ produit.categorie.titre }}</div>
+				<div class="metadata">
+					{{ produit.categorieid.titre }}</div>
 				<div class="content">
 					<img
 					src=" {{ produit.image }}" alt="Image du produit">
@@ -20,7 +19,7 @@
 		<h2 class="text-center mx-auto m-3">Commentaires</h2>
 		<section id="commentaire" class="col-md-10 mx-auto">
 
-			{% for commentaire in produit.commentaire %}
+			{% for commentaire in produit.commentaires %}
 
 				<div class="commentaire">
 					<div class="row">
