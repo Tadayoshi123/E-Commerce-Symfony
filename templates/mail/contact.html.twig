@@ -1,0 +1,23 @@
+<table class="table table-bordered">
+	<tr>
+		<td>Prénom</td>
+		<td>{{ contact.nom }}</td>
+	</tr>
+	<tr>
+		<td>Nom</td>
+		<td>{{ contact.prenom }}</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>{{ contact.email }}</td>
+	</tr>
+	<tr>
+		<td>Message</td>
+		<td>{{ contact.contenu }}</td>
+	</tr>
+	{% for message in app.flashes('success') %}
+<div class="col-md-5 mx-auto alert alert-success text-center">
+ {{ message }}
+</div>
+{% endfor %}
+</table>

@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\ContactType;
+use App\Notification\ContactNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,4 +82,27 @@ class CommerceController extends AbstractController
             // editMode = 0 si on est en création
         ]);
     }
+
+    #[Route('/contact', name: 'app_contact')]
+
+public function contact(Request $request, EntityManagerInterface $manager, ContactNotification $notification)
+
+{
+ $contact = new Contact();
+ $form = $this->createForm(ContactType::class, $contact);
+ $form->handleRequest($request);
+
+
+ if ($form->isSubmitted() && $form->isValid()) {
+    $notification->notify($contact);
+    $this->addFlash('success', 'Votre Email a bien été envoyé');
+    $manager->persist($contact); // on prépare l'insertion
+    $manager->flush(); // on execute l'insertion
+ }
+ return $this->render("mail/contact.html.twig", [
+    'contact' => $contact
+ ]);
 }
+}
+
+

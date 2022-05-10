@@ -2,10 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Categorie;
+use Faker\Factory;
 use App\Entity\Produit;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Categorie;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class ProductFixtures extends Fixture
 {
