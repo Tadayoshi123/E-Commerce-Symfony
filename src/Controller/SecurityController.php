@@ -27,16 +27,6 @@ class SecurityController extends AbstractController
     }
     
 
-    #[Route(path: '/register', name: 'app_goReg')]
-    public function goToInscription(AuthenticationUtils $authenticationUtils): Response
-    {
-
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_register');
-        }
-        
-        return $this->render('connexion/index.html.twig');
-    }
 
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void

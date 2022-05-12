@@ -26,7 +26,9 @@
 				<a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-warning">
 					Lire la suite
 				</a>
+				{% if is_granted('ROLE_USER') %}
 				<a href="{{ path('panier_add', {id: produit.id }) }}" class="btn btn-warning">Ajouter au panier</a>
+				{% endif %}
 			</div>
 		{% endfor %}
 	</div>

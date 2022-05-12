@@ -32,6 +32,7 @@
 					</li>
 					
 					<li>
+						{% if is_granted('ROLE_USER') %}
 						<a class="nav-link active position-relative" href="{{ path('app_panier') }}">Panier
 
 							{% set nbProduits = app.session.get('qt') %}
@@ -40,16 +41,19 @@
 								<span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
 									{{ nbProduits }}</span>
 							{% endif %}
+						{% endif %}
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link active" href="{{ path('app_contact') }}">Contact
 						</a>
 					</li>
+					{% if is_granted('ROLE_USER') %}
 					<li class="nav-item">
 						<a class="nav-link active" href="{{ path('app_logout') }}">Deconnexion
 						</a>
 					</li>
+					{% endif %}
 				</div>
 			</nav>
 			<div class="container"> {% block body %}{% endblock %}
