@@ -2,16 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Categorie;
+use App\Entity\Commentaire;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[Vich\Uploadable]
+
 class Produit
 {
     #[ORM\Id]
@@ -41,14 +44,16 @@ class Produit
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'produits')]
     private $user_id;
 
-    #[Vich\UploadableField(mapping: "produit_image", fileNameProperty: "image")]
+    #[Vich\UploadableField(mapping: "produits_image", fileNameProperty: 'image')]
     private $imageFile;
+
+    #[ORM\Column(type: 'datetime')]
+    private $updated_at;
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -99,7 +104,6 @@ class Produit
     public function setImage(?string $image): self
     {
         $this->image = $image;
-
         return $this;
     }
 
@@ -165,6 +169,21 @@ class Produit
     public function setImageFile(?File $imageFile = null): self
     {
         $this->imageFile = $imageFile;
+
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

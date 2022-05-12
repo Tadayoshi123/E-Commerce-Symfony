@@ -6,6 +6,7 @@ use App\Service\PanierService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PanierController extends AbstractController
 {
@@ -39,5 +40,12 @@ class PanierController extends AbstractController
     {
         $cs->delete($id);
         return $this->redirectToRoute('app_panier');
+    }
+
+    #[Route('/panier/thankyou', name: 'thank_you')]
+
+    public function redirection()
+    {
+        return $this->render("panier/thankyou.html.twig");
     }
 }

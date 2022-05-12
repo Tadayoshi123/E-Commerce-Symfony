@@ -6,24 +6,29 @@
 {% block body %}
 	<h1 class="text-center my-3">Liste des produits</h1>
 
-	<div class="row">
-		{% for produit in produits %}
-			<div class="col-md-4">
-				<div class="card mb-3" style="width: 18rem;">
-					<h3 class="card-header">{{ produit.nom}}</h3>
-					<img src="<img src="{{ asset('images/produit/' ~ produit.image ) }}" alt="" class="col-md-12">" alt="Image du produit">
-					<div class="card-body">
-						<p class="card-text text-end fw-bold">
-							{{ produit.prix }}€</p>
-					</div>
-					<div class="card-body text-end">
-						<a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-primary">
-							Lire la suite
-							<a href="{{ path('panier_add', {id: produit.id }) }}" class="card-link btn btn-primary">Ajouter au panier</a>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
+	{{ form_start(formRecherche) }}
+	{{ form_widget(formRecherche.recherche, {
+            'attr': {
+                'placeholder' : "Rechercher un produit"
+            	}
+        	}) }}
+	<button type="submit" class="btn btn-warning mt-2">Recherche</button>
 
-	{% endblock %}
+	{{ form_end(formRecherche)}}
+	<div class="row">
+		{% for produit in produits |sort((a,b) => a.nom <=> b.nom)  %}
+			<div class="col-md-4">
+				<h4>{{ produit.nom}}</h4>
+				{# <img src="{{ asset('images/produit/' ~ produit.image ) }}" alt="" class="col-md-12"> #}
+				<img src="{{ produit.image }}" alt="">
+				<p>{{ produit.categorieid.titre }}</p>
+				<p>{{ produit.prix }}€</p>
+				<a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-warning">
+					Lire la suite
+				</a>
+				<a href="{{ path('panier_add', {id: produit.id }) }}" class="btn btn-warning">Ajouter au panier</a>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}

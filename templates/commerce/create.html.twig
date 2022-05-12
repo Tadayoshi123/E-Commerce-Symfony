@@ -24,11 +24,17 @@
         }
     }) }}
 
-	{{ form_row(formProduit.imageFile) }}
+	{{ form_row(formProduit.imageFile, {
+		'label':"Choisissez une image"
+	}) }}
 
 	{{ form_row(formProduit.categorieid, {
         'label': "Catégorie"
     }) }}
+
+	{{ form_row(formProduit.prix , {
+		'label': "Prix du produit"
+	})}}
 
 	<button type="submit" class="btn btn-primary">
 		{% if editMode %}

@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Entity\Produit;
+use App\Form\ContactType;
 use App\Form\ProduitType;
+use App\Form\RechercheType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ContactType;
 use App\Notification\ContactNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +26,23 @@ class CommerceController extends AbstractController
     // }
 
     #[Route('/produit', name: 'app_produit')]
-    public function products(ProduitRepository $repo): Response
+    public function products(ProduitRepository $repo, Request $request): Response
     {
-        $produits = $repo->findAll();
+        $form = $this->createForm(RechercheType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) // si l'utilisateur fait une recherche
+        {
+            $data = $form->get('recherche')->getData(); //je recupère la saisie de l'utilisateur
+            $produits = $repo->getProduitsByName($data);
+        } else //sinon, pas de recherche = récupération de tous les articles
+        {
+            $produits = $repo->findAll();
+            // je recupère les articles que je stocke dans un tableau $articles
+        }
         return $this->render('commerce/index.html.twig', [
             'produits' => $produits,
+            'formRecherche' => $form->createView()
         ]);
     }
 
@@ -43,6 +56,7 @@ class CommerceController extends AbstractController
     }
 
     #[Route('/create', name: 'app_create')]
+    #[Route('/edit/{id}', name: 'app_edit')]
 
     public function create(Request $request, EntityManagerInterface $manager, Produit $produit = null)
     {
@@ -85,24 +99,22 @@ class CommerceController extends AbstractController
 
     #[Route('/contact', name: 'app_contact')]
 
-public function contact(Request $request, EntityManagerInterface $manager, ContactNotification $notification)
+    public function contact(Request $request, EntityManagerInterface $manager, ContactNotification $notification)
 
-{
- $contact = new Contact();
- $form = $this->createForm(ContactType::class, $contact);
- $form->handleRequest($request);
+    {
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
 
 
- if ($form->isSubmitted() && $form->isValid()) {
-    $notification->notify($contact);
-    $this->addFlash('success', 'Votre Email a bien été envoyé');
-    $manager->persist($contact); // on prépare l'insertion
-    $manager->flush(); // on execute l'insertion
- }
- return $this->render("mail/contact.html.twig", [
-    'contact' => $contact
- ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $notification->notify($contact);
+            $this->addFlash('success', 'Votre Email a bien été envoyé');
+            $manager->persist($contact); // on prépare l'insertion
+            $manager->flush(); // on execute l'insertion
+        }
+        return $this->render("mail/contact.html.twig", [
+            'contact' => $contact
+        ]);
+    }
 }
-}
-
-
