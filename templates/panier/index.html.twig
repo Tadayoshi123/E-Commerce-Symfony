@@ -13,6 +13,7 @@
 			<thead>
 				<tr>
 					<th>Produit</th>
+					<th>Nom Produit</th>
 					<th>Prix</th>
 					<th>Quantité</th>
 					<th>Total</th>
@@ -22,8 +23,8 @@
 			<tbody>
 				{% for item in items %}
 					<tr>
-						<td><img src="{{item.produit.image}}" alt="Image du produit">
-							{{ item.produit.nom }}</td>
+						<td><img src="{{item.produit.image}}" alt="Image du produit" class="img-fluid" style="max-width:20vw;max-height:20vh"></td>
+						<td>{{ item.produit.nom }}</td>
 						<td>{{ item.produit.prix }}€</td>
 						<td>{{ item.quantity }}
 							<a href="{{ path('panier_add', {id : item.produit.id}) }}">

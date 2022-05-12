@@ -27,7 +27,6 @@ class ProductFixtures extends Fixture
             $produit->setNom($faker->sentence(3))
                 ->setDescription($description)
                 ->setImage("http://picsum.photos/250/150")
-                ->setUpdatedAt($faker->dateTimeBetween('-6 months'))
                 ->setPrix($faker->randomFloat(2, 10, 100))
                 ->setCategorieId($categorie);
 

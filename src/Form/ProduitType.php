@@ -18,7 +18,8 @@ class ProduitType extends AbstractType
             ->add('nom')
             ->add('description')
             ->add('prix')
-            ->add('imageFile', FileType::class, ['required' => false])
+            ->add('image')
+            //->add('imageFile', FileType::class, ['required' => false])
             ->add('categorieid', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'titre'

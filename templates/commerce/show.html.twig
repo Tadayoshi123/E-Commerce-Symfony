@@ -6,7 +6,7 @@
 			<article class="container-lg">
 				<div class="row">
 					<div class="col-lg">
-						<img src="{{ produit.image }}" alt="" class="p-2" style="width:90%; height:90%">
+						<img src="{{ produit.image }}" alt="" class="img-fluid" style="max-width:20vw;max-height:20vh">
 					</div>
 					<div class="col-sm">
 						<h2>{{ produit.nom }}</h2>
@@ -30,10 +30,20 @@
 
 			{% for commentaire in produit.commentaires %}
 
-				<div class="commentaire">
+				<div class="comment">
 					<div class="row">
+					{# {% if is_granted('IS_ATHENTICATED_FULLY') %} #}
+					{{ form_start(formCommentaire) }}
+					{{ form_row(formCommentaire.contenu, {
+						'attr': {
+							'placeholder': "Ajouter un commentaire"
+						}
+					}) }}
+					<button type="submit" class="btn btn-warning">Envoyer</button>
+					{{ form_end(formCommentaire) }}
+					{# {% endif %} #}
 						<div class="col-md-3">
-							{{ commentaire.user_id }}
+							{{ commentaire.user_id.user }}
 							<small>{{ commentaire.createdAt |date('d/m/Y à H:i:s') }}</small>
 						</div>
 						<div class="col-md-9">

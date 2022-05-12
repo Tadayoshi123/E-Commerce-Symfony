@@ -15,19 +15,19 @@
 	<button type="submit" class="btn btn-warning mt-2">Recherche</button>
 
 	{{ form_end(formRecherche)}}
-	<div class="row">
+	<div class="row mt-3">
 		{% for produit in produits |sort((a,b) => a.nom <=> b.nom)  %}
 			<div class="col-md-4">
 				<h4>{{ produit.nom}}</h4>
 				{# <img src="{{ asset('images/produit/' ~ produit.image ) }}" alt="" class="col-md-12"> #}
-				<img src="{{ produit.image }}" alt="">
+				<img src="{{ produit.image }}" alt="Image du produit" class="img-fluid" style="max-width:20vw;max-height:20vh">
 				<p>{{ produit.categorieid.titre }}</p>
 				<p>{{ produit.prix }}€</p>
 				<a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-warning">
-					Lire la suite
+					Voir Produit
 				</a>
 				{% if is_granted('ROLE_USER') %}
-				<a href="{{ path('panier_add', {id: produit.id }) }}" class="btn btn-warning">Ajouter au panier</a>
+					<a href="{{ path('panier_add', {id: produit.id }) }}" class="btn btn-warning">Ajouter au panier</a>
 				{% endif %}
 			</div>
 		{% endfor %}

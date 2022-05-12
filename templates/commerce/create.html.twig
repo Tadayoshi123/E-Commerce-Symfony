@@ -24,8 +24,11 @@
         }
     }) }}
 
-	{{ form_row(formProduit.imageFile, {
-		'label':"Choisissez une image"
+	{{ form_row(formProduit.image, {
+		'label':"Choisissez une image",
+		'attr': {
+			'placeholder': "Ajoutez le lien de l'image"
+		}
 	}) }}
 
 	{{ form_row(formProduit.categorieid, {

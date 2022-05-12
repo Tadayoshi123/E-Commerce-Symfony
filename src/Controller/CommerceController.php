@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
 use App\Entity\Contact;
 use App\Entity\Produit;
+use App\Entity\User;
+use App\Form\CommentaireType;
 use App\Form\ContactType;
 use App\Form\ProduitType;
 use App\Form\RechercheType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Notification\ContactNotification;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,11 +52,33 @@ class CommerceController extends AbstractController
 
     #[Route('/produit/show/{id}', name: 'produit_show')]
 
-    public function show(Produit $produit)
+    public function show(Produit $produit, Request $request, EntityManagerInterface $manager, Commentaire $commentaire = null)
     {
-        return $this->render('commerce/show.html.twig', [
-            'produit' => $produit
-        ]);
+        $user = $this->getUser();
+        $commentaire = new Commentaire;
+        $commentaire->setUserId($user);
+        $commentaire->setProduitId($produit);
+        $commentaire->setCreatedAt(new \DateTime());
+
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($commentaire);
+            $manager->flush();
+            return $this->render('commerce/show.html.twig', [
+                'id' => $produit->getId()
+            ]);
+        }
+        if (null === $produit) {
+            $this->addFlash("error", "Produit Introuvable !");
+            return $this->redirectToRoute('app_produit');
+        } else {
+            return $this->render('commerce/show.html.twig', [
+                'produit' => $produit,
+                'formCommentaire' => $form->createView()
+            ]);
+        }
     }
 
     #[Route('/create', name: 'app_create')]
@@ -96,5 +122,4 @@ class CommerceController extends AbstractController
             // editMode = 0 si on est en création
         ]);
     }
-
 }
