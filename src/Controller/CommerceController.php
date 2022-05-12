@@ -66,7 +66,7 @@ class CommerceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($commentaire);
             $manager->flush();
-            return $this->render('commerce/show.html.twig', [
+            return $this->redirectToRoute('produit_show', [
                 'id' => $produit->getId()
             ]);
         }
@@ -86,15 +86,16 @@ class CommerceController extends AbstractController
 
     public function create(Request $request, EntityManagerInterface $manager, Produit $produit = null)
     {
-        // article = null signifie que si l'on va sur la route ne alors $article = null
+        // produit = null signifie que si l'on va sur la route ne alors $article = null
         // et si on est sur edit, alors l'article correspondra à l'id dans la route
 
         // la classe Request contient toutes les données des superglobales
         if (!$produit) {
+            $user = $this->getUser();
             $produit = new Produit;
+            $produit->setUserId($user);
         }
         // je créer un objet Article vide prêt à être rempli
-        dump($request);
         // dans la classe Request, l'objet request contient les données de $_POST
         //l'objet query contient les données de $_GET
 
@@ -103,7 +104,7 @@ class CommerceController extends AbstractController
         $form->handleRequest($request);
         // handleRequest() permet de faire certaines vérifications (la méthode du formulaire ?)
         // permet aussi de vérifier si les champs sont remplis
-        //dump($article);
+        dump($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($produit);

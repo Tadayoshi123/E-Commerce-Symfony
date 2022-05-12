@@ -32,16 +32,14 @@
 
 				<div class="comment">
 					<div class="row">
-					{# {% if is_granted('IS_ATHENTICATED_FULLY') %} #}
-					{{ form_start(formCommentaire) }}
-					{{ form_row(formCommentaire.contenu, {
+						{{ form_start(formCommentaire) }}
+						{{ form_row(formCommentaire.contenu, {
 						'attr': {
 							'placeholder': "Ajouter un commentaire"
 						}
 					}) }}
-					<button type="submit" class="btn btn-warning">Envoyer</button>
-					{{ form_end(formCommentaire) }}
-					{# {% endif %} #}
+						<button type="submit" class="btn btn-warning">Envoyer</button>
+						{{ form_end(formCommentaire) }}
 						<div class="col-md-3">
 							{{ commentaire.user_id.user }}
 							<small>{{ commentaire.createdAt |date('d/m/Y à H:i:s') }}</small>
