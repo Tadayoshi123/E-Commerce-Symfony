@@ -1,26 +1,34 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	<section class="row produit">
+	<section>
 		<section class="produits">
-			<article class="col-md-6 mx-auto text-center border border-dark mb-3 p-3 mt-3 mr-1">
-				<h2>{{ produit.nom }}</h2>
-				<div class="metadata">Ecrit le
-					dans la catégorie
-					{{ produit.categorie.titre }}</div>
-				<div class="content">
-					<img
-					src=" {{ produit.image }}" alt="Image du produit">
-					<hr>
-					{{ produit.description |raw}}
-
+			<article class="container-lg">
+				<div class="row">
+					<div class="col-lg">
+						<img src="{{ produit.image }}" alt="" class="p-2" style="width:90%; height:90%">
+					</div>
+					<div class="col-sm">
+						<h2>{{ produit.nom }}</h2>
+						<div class="metadata">
+							{{ produit.categorieid.titre }}</div>
+						<div class="content">
+							<hr>
+							{{ produit.description |raw}}
+						</div>
+						<hr>
+						<h2>{{ produit.prix }}
+							€</h2>
+						<a href="{{ path('panier_add', {id: produit.id }) }}" class="btn btn-warning">Ajouter au panier</a>
+					</div>
 				</div>
 			</article>
 		</section>
+		<hr>
 		<h2 class="text-center mx-auto m-3">Commentaires</h2>
 		<section id="commentaire" class="col-md-10 mx-auto">
 
-			{% for commentaire in produit.commentaire %}
+			{% for commentaire in produit.commentaires %}
 
 				<div class="commentaire">
 					<div class="row">

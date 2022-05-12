@@ -55,6 +55,17 @@ class PanierService
         $session->set('panier', $panier);
     }
 
+    public function redirectdelete($id)
+    {
+        $session = $this->rs->getSession();
+        $panier = $session->get('panier', []);
+
+        if (!empty($panier[$id]))
+            unset($panier[$id]);
+
+        $session->set('panier', $panier);
+    }
+
     public function getPanierWithData()
     {
         $session = $this->rs->getSession();

@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Form\ContactType;
+use App\Form\ProduitType;
+use App\Form\RechercheType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Notification\ContactNotification;
@@ -24,15 +26,27 @@ class CommerceController extends AbstractController
     // }
 
     #[Route('/produit', name: 'app_produit')]
-    public function products(ProduitRepository $repo): Response
+    public function products(ProduitRepository $repo, Request $request): Response
     {
-        $produits = $repo->findAll();
+        $form = $this->createForm(RechercheType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) // si l'utilisateur fait une recherche
+        {
+            $data = $form->get('recherche')->getData(); //je recupère la saisie de l'utilisateur
+            $produits = $repo->getProduitsByName($data);
+        } else //sinon, pas de recherche = récupération de tous les articles
+        {
+            $produits = $repo->findAll();
+            // je recupère les articles que je stocke dans un tableau $articles
+        }
         return $this->render('commerce/index.html.twig', [
             'produits' => $produits,
+            'formRecherche' => $form->createView()
         ]);
     }
 
-    #[Route('/produit/show/{id}', name:'produit_show')]
+    #[Route('/produit/show/{id}', name: 'produit_show')]
 
     public function show(Produit $produit)
     {
@@ -41,27 +55,66 @@ class CommerceController extends AbstractController
         ]);
     }
 
+    #[Route('/create', name: 'app_create')]
+    #[Route('/edit/{id}', name: 'app_edit')]
 
-    #[Route('/contact', name: 'blog_contact')]
+    public function create(Request $request, EntityManagerInterface $manager, Produit $produit = null)
+    {
+        // article = null signifie que si l'on va sur la route ne alors $article = null
+        // et si on est sur edit, alors l'article correspondra à l'id dans la route
 
-public function contact(Request $request, EntityManagerInterface $manager, ContactNotification $notification)
+        // la classe Request contient toutes les données des superglobales
+        if (!$produit) {
+            $produit = new Produit;
+        }
+        // je créer un objet Article vide prêt à être rempli
+        dump($request);
+        // dans la classe Request, l'objet request contient les données de $_POST
+        //l'objet query contient les données de $_GET
 
-{
- $contact = new Contact();
- $form = $this->createForm(ContactType::class, $contact);
- $form->handleRequest($request);
+
+        $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
+        // handleRequest() permet de faire certaines vérifications (la méthode du formulaire ?)
+        // permet aussi de vérifier si les champs sont remplis
+        //dump($article);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($produit);
+            $manager->flush();
+            return $this->redirectToRoute('produit_show', [
+                'id' => $produit->getId()
+            ]);
+            // après insertion de l'article, je me redirige vers la route blog_show
+            // cette route a besoin du paramètre "id" : l'id de l'article que je viens d'insérer
+        }
+        return $this->render('commerce/create.html.twig', [
+            'formProduit' => $form->createView(),
+            // createView() renvoie un objet permettant d'afficher le formulaire
+            'editMode' => $produit->getId() !== null
+            // editMode = 1 si on est en édition
+            // editMode = 0 si on est en création
+        ]);
+    }
+
+    #[Route('/contact', name: 'app_contact')]
+
+    public function contact(Request $request, EntityManagerInterface $manager, ContactNotification $notification)
+
+    {
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
 
 
- if ($form->isSubmitted() && $form->isValid()) {
-    $notification->notify($contact);
-    $this->addFlash('success', 'Votre Email a bien été envoyé');
-    $manager->persist($contact); // on prépare l'insertion
-    $manager->flush(); // on execute l'insertion
- }
- return $this->render("mail/contact.html.twig", [
-    'contact' => $contact
- ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $notification->notify($contact);
+            $this->addFlash('success', 'Votre Email a bien été envoyé');
+            $manager->persist($contact); // on prépare l'insertion
+            $manager->flush(); // on execute l'insertion
+        }
+        return $this->render("mail/contact.html.twig", [
+            'contact' => $contact
+        ]);
+    }
 }
-}
-
-
