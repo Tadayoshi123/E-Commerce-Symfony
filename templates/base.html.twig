@@ -30,6 +30,7 @@
 						<a class="nav-link active" href="{{ path('app_produit') }}">Produits
 						</a>
 					</li>
+					
 					<li>
 						<a class="nav-link active position-relative" href="{{ path('app_panier') }}">Panier
 
@@ -39,6 +40,14 @@
 								<span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
 									{{ nbProduits }}</span>
 							{% endif %}
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="{{ path('app_contact') }}">Contact
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="{{ path('app_logout') }}">Deconnexion
 						</a>
 					</li>
 				</div>
