@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "bootstrap": "^5.1.3"
+  },
+  "dependencies": {
+    "axentix": "^2.0.1"
   }
 }

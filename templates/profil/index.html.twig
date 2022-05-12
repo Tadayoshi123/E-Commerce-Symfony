@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+
+
+{% block body %}
+	<div class="grix xs4">
+		<div>
+			<h1>Profil de
+				{{ app.user.prenom}}
+				{{app.user.nom}}</h1>
+		</div>
+		<div>Nom : {{ app.user.nom}}</div>
+
+		<div>prénom : {{ app.user.prenom}}</div>
+		<div>Email :</div>
+		<div>{{ app.user.email}}</div>
+	</div>
+    <div>
+        <a href="{{ path('app_profilmodifprofil')}}" class="btn">Modifier profil</a>
+        <a href="{{ path('app_create')}}" class="btn">Modifier objets</a>
+    </div>
+    <div>
+    <h2>Objet(s) en vente de {{ app.user.prenom}}
+				{{app.user.nom}} ({{app.user.produits|length}})</h2>
+    {% for produit in app.user.produits %}
+        <div>Nom du produit</div>
+        <div>{{ produit.nom }}</div>
+        <img src="{{ produit.image }}" alt="" class="img-fluid" style="max-width:20vw;max-height:20vh">
+    {% endfor %}
+
+     <h2>Commentaire(s) de {{ app.user.prenom}}
+				{{app.user.nom}} ({{app.user.commentaires|length}})</h2>
+    {% for commentaire in app.user.commentaires %}
+        <div>Commentaires :</div>
+        <div>{{commentaires.contenu}}</div>
+    {% endfor %}
+
+    </div>
+{% endblock %}

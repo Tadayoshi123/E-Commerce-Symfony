@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+
+
+{% block body %}
+	<div class="grix xs4">
+		<div>
+			<h1>Modification profil de
+				{{ app.user.prenom}}
+				{{app.user.nom}}
+				</h1>
+				{{form(form)}}
+		</div>
+		
+
+
+{% endblock %}
